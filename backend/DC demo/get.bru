@@ -1,0 +1,25 @@
+meta {
+  name: get
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:5000/api/users
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Test",
+    "email": "test@examphjsle.com",
+    "password": "123496",
+    "role": "developer",
+    "id": "1"
+  }
+}
