@@ -1,8 +1,8 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const morgan = require("morgan");
 require("dotenv").config();
+const connectDB = require("./config/db");
 
 // Import routes
 const userRoutes = require("./routes/userRoutes");
@@ -11,6 +11,9 @@ const taskRoutes = require("./routes/taskRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Connect to MongoDB
+connectDB();
 
 // Middleware
 app.use(express.json());
@@ -34,22 +37,7 @@ app.get("/", (req, res) => {
   res.send("DevCollab API is running...");
 });
 
-// Connect to MongoDB
-const MONGODB_URI =
-  process.env.MONGO_URI || "mongodb://localhost:27017/devcollab";
-
-// Start the server regardless of MongoDB connection
+// Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-
-  // Try to connect to MongoDB
-  mongoose
-    .connect(MONGODB_URI)
-    .then(() => {
-      console.log("Connected to MongoDB");
-    })
-    .catch((err) => {
-      console.error("Failed to connect to MongoDB", err);
-      console.log("Server is running without MongoDB connection");
-    });
 });
