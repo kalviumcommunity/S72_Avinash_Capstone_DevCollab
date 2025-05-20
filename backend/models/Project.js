@@ -45,4 +45,31 @@ const projectSchema = new mongoose.Schema({
   },
 });
 
+// Add indexes for better query performance
+projectSchema.index({ owner: 1 });
+projectSchema.index({ status: 1 });
+
+// Middleware to update user's projects when a project is created
+projectSchema.pre("save", async function (next) {
+  if (this.isNew) {
+    try {
+      const User = mongoose.model("User");
+      // Add to owner's ownedProjects
+      await User.findByIdAndUpdate(this.owner, {
+        $push: { ownedProjects: this._id },
+      });
+      // Add to members' memberProjects
+      if (this.members && this.members.length > 0) {
+        await User.updateMany(
+          { _id: { $in: this.members } },
+          { $push: { memberProjects: this._id } }
+        );
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+  next();
+});
+
 module.exports = mongoose.model("Project", projectSchema);

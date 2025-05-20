@@ -32,10 +32,32 @@ const userSchema = new mongoose.Schema({
       type: String,
     },
   ],
-  projects: [
+  // Projects owned by the user
+  ownedProjects: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Project",
+    },
+  ],
+  // Projects where user is a member
+  memberProjects: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Project",
+    },
+  ],
+  // Tasks assigned to the user
+  assignedTasks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Task",
+    },
+  ],
+  // Tasks created by the user
+  createdTasks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Task",
     },
   ],
   createdAt: {
@@ -43,5 +65,9 @@ const userSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
+// Add indexes for better query performance
+userSchema.index({ email: 1 });
+userSchema.index({ username: 1 });
 
 module.exports = mongoose.model("User", userSchema);
