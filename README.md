@@ -65,3 +65,5 @@ This capstone project is part of the Kalvium program. Open for peer feedback and
 ---
 
 Backend Deployment Link:https://s72-avinash-capstone-devcollab.onrender.com/
+
+Frontend Deployment Link: https://stellar-panda-1134e0.netlify.app/
