@@ -7,10 +7,18 @@ const { protect, projectManager } = require("../middleware/authMiddleware");
 router.use(protect);
 
 // Project routes
-router.post("/", projectManager, projectController.createProject);
+router.post("/", projectController.createProject);
 router.get("/", projectController.getProjects);
 router.get("/:id", projectController.getProjectById);
-router.put("/:id", projectManager, projectController.updateProject);
-router.delete("/:id", projectManager, projectController.deleteProject);
+router.put("/:id", projectController.updateProject);
+router.delete("/:id", projectController.deleteProject);
+router.get("/:id/board", projectController.getBoardConfig);
+router.put("/:id/board", projectController.updateBoardConfig);
+router.get("/:id/issues", projectController.getProjectIssues);
+router.post(
+  "/:id/issues",
+  projectManager,
+  projectController.createProjectIssue
+);
 
 module.exports = router;

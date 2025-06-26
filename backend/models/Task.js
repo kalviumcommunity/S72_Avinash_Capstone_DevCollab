@@ -17,8 +17,17 @@ const taskSchema = new mongoose.Schema({
   },
   priority: {
     type: String,
-    enum: ["low", "medium", "high"],
+    enum: ["low", "medium", "high", "critical"],
     default: "medium",
+  },
+  issueType: {
+    type: String,
+    enum: ["task", "bug", "story", "epic"],
+    default: "task",
+  },
+  customFields: {
+    type: Object,
+    default: {},
   },
   project: {
     type: mongoose.Schema.Types.ObjectId,
@@ -58,6 +67,16 @@ const taskSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  parent: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Task",
+  },
+  linkedIssues: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Task",
+    },
+  ],
 });
 
 // Add indexes for better query performance

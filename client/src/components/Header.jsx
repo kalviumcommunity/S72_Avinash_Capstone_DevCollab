@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   AppBar,
   Box,
@@ -17,11 +17,16 @@ import {
   Search as SearchIcon,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
+import { UserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
+import api from "../api";
 
 const Header = ({ onMenuClick }) => {
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
   const [notificationsAnchor, setNotificationsAnchor] = useState(null);
+  const { user, logout } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -34,6 +39,28 @@ const Header = ({ onMenuClick }) => {
   const handleMenuClose = () => {
     setAnchorEl(null);
     setNotificationsAnchor(null);
+  };
+
+  const handleLogout = () => {
+    handleMenuClose();
+    logout();
+    navigate("/login");
+  };
+
+  const handleDeleteAccount = async () => {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete your account? This action cannot be undone."
+      )
+    )
+      return;
+    try {
+      await api.delete("/users/me");
+      logout();
+      navigate("/");
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to delete account.");
+    }
   };
 
   return (
@@ -86,8 +113,9 @@ const Header = ({ onMenuClick }) => {
                 height: 32,
                 bgcolor: theme.palette.primary.main,
               }}
+              src={user?.avatar || undefined}
             >
-              A
+              {user?.name ? user.name.charAt(0).toUpperCase() : "A"}
             </Avatar>
           </IconButton>
         </Box>
@@ -99,9 +127,12 @@ const Header = ({ onMenuClick }) => {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+          <MenuItem disabled>{user?.name || "Profile"}</MenuItem>
           <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
-          <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          <MenuItem onClick={handleDeleteAccount} sx={{ color: "red" }}>
+            Delete Account
+          </MenuItem>
         </Menu>
 
         <Menu

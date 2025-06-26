@@ -1,0 +1,16 @@
+meta {
+  name: Get Users
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:5000/api/users/
+  body: none
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearern eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MmExNWQ0YjFiMzEzNmNkM2UxNGU1ZiIsImlhdCI6MTc0NzU4ODU2NSwiZXhwIjoxNzUwMTgwNTY1fQ.ctTQ6NqPktOwqijiILkgifJA9Y8b05O51twUeF_O-Wg
+}

@@ -12,6 +12,7 @@ router.post("/", userController.registerUser);
 router.get("/", protect, admin, userController.getUsers);
 router.get("/:id", protect, userController.getUserById);
 router.put("/:id", protect, userController.updateUser);
+router.delete("/me", protect, userController.deleteOwnAccount);
 router.delete("/:id", protect, admin, userController.deleteUser);
 
 module.exports = router;

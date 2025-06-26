@@ -9,6 +9,8 @@ import {
   Avatar,
   AvatarGroup,
   useTheme,
+  Button,
+  Stack,
 } from "@mui/material";
 import {
   Assignment as TaskIcon,
@@ -17,6 +19,7 @@ import {
   Schedule as DeadlineIcon,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const StatCard = ({ title, value, icon, color, delay }) => {
   const theme = useTheme();
@@ -134,6 +137,7 @@ const ProjectCard = ({ project, delay }) => {
 
 const Dashboard = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const stats = [
     {
@@ -196,6 +200,24 @@ const Dashboard = () => {
 
   return (
     <Box>
+      <Stack direction={{ xs: "column", sm: "row" }} spacing={2} sx={{ mb: 4 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={() => navigate("/app/projects")}
+        >
+          Manage Projects
+        </Button>
+        <Button
+          variant="outlined"
+          color="primary"
+          size="large"
+          onClick={() => navigate("/app/project/create")}
+        >
+          Create Project
+        </Button>
+      </Stack>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

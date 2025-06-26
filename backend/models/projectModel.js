@@ -1,5 +1,14 @@
 const mongoose = require("mongoose");
 
+const columnSchema = new mongoose.Schema(
+  {
+    id: { type: String, required: true }, // unique column id (e.g., uuid)
+    name: { type: String, required: true },
+    order: { type: Number, required: true },
+  },
+  { _id: false }
+);
+
 const projectSchema = new mongoose.Schema(
   {
     name: {
@@ -34,6 +43,14 @@ const projectSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    board: {
+      type: [columnSchema],
+      default: [
+        { id: "todo", name: "To Do", order: 0 },
+        { id: "inprogress", name: "In Progress", order: 1 },
+        { id: "done", name: "Done", order: 2 },
+      ],
+    },
   },
   { timestamps: true }
 );

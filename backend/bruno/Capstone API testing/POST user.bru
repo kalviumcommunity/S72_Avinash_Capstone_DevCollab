@@ -1,0 +1,24 @@
+meta {
+  name: POST user
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:5000/api/users
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name":"Avi",
+    "email":"avi@gmail.com",
+    "password":"123456",
+    "role":"admin"
+  }
+}

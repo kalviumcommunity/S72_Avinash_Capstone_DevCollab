@@ -1,0 +1,22 @@
+meta {
+  name: PUT user
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:5000/api/users/682a15d4b1b3136cd3e14e5f
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearern eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MmExNWQ0YjFiMzEzNmNkM2UxNGU1ZiIsImlhdCI6MTc0NzU4ODU2NSwiZXhwIjoxNzUwMTgwNTY1fQ.ctTQ6NqPktOwqijiILkgifJA9Y8b05O51twUeF_O-Wg
+}
+
+body:json {
+  {
+    "password":"654321"
+  }
+}
