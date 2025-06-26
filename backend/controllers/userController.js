@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 // Generate JWT
 const generateToken = (id) => {
@@ -21,12 +22,19 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    // Handle avatar upload
+    let avatar = "";
+    if (req.file) {
+      avatar = `/uploads/${req.file.filename}`;
+    }
+
     // Create user
     const user = await User.create({
       name,
       email,
       password,
       role,
+      avatar,
     });
 
     if (user) {
@@ -117,6 +125,11 @@ exports.updateUser = async (req, res) => {
         user.password = await bcrypt.hash(req.body.password, salt);
       }
 
+      // Handle avatar update
+      if (req.file) {
+        user.avatar = `/uploads/${req.file.filename}`;
+      }
+
       const updatedUser = await user.save();
 
       res.json({
@@ -124,6 +137,7 @@ exports.updateUser = async (req, res) => {
         name: updatedUser.name,
         email: updatedUser.email,
         role: updatedUser.role,
+        avatar: updatedUser.avatar,
       });
     } else {
       res.status(404).json({ message: "User not found" });
