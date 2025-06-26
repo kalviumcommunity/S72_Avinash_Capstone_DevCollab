@@ -17,16 +17,18 @@ import {
   Group as TeamIcon,
   CalendarToday as CalendarIcon,
   Settings as SettingsIcon,
+  Person as ProfileIcon,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 
 const drawerWidth = 240;
 
 const menuItems = [
-  { text: "Dashboard", icon: <DashboardIcon />, path: "/" },
+  { text: "Dashboard", icon: <DashboardIcon />, path: "/app" },
   { text: "Projects", icon: <ProjectsIcon />, path: "/projects" },
   { text: "Team", icon: <TeamIcon />, path: "/team" },
   { text: "Calendar", icon: <CalendarIcon />, path: "/calendar" },
+  { text: "Profile", icon: <ProfileIcon />, path: "/app/profile" },
   { text: "Settings", icon: <SettingsIcon />, path: "/settings" },
 ];
 

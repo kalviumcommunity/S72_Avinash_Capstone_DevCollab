@@ -24,6 +24,7 @@ const Register = () => {
     confirm: "",
     role: "developer",
   });
+  const [avatar, setAvatar] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const { setUser } = useContext(UserContext);
@@ -45,11 +46,16 @@ const Register = () => {
       return;
     }
     try {
-      const res = await api.post("/users", {
-        name: form.name,
-        email: form.email,
-        password: form.password,
-        role: form.role,
+      const formData = new FormData();
+      formData.append("name", form.name);
+      formData.append("email", form.email);
+      formData.append("password", form.password);
+      formData.append("role", form.role);
+      if (avatar) {
+        formData.append("avatar", avatar);
+      }
+      const res = await api.post("/users", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
       setSuccess(true);
       setError("");
@@ -61,6 +67,7 @@ const Register = () => {
         email: res.data.email,
         role: res.data.role,
         token: res.data.token,
+        avatar: res.data.avatar,
       });
       navigate("/app");
     } catch (err) {
@@ -133,6 +140,15 @@ const Register = () => {
               <MenuItem value="admin">Admin</MenuItem>
             </Select>
           </FormControl>
+          <Button variant="outlined" component="label" fullWidth sx={{ mb: 2 }}>
+            Upload Avatar
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={(e) => setAvatar(e.target.files[0])}
+            />
+          </Button>
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {error}

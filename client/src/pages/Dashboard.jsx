@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import {
   Grid,
   Card,
@@ -11,6 +11,7 @@ import {
   useTheme,
   Button,
   Stack,
+  TextField,
 } from "@mui/material";
 import {
   Assignment as TaskIcon,
@@ -20,6 +21,8 @@ import {
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
+import api from "../api";
 
 const StatCard = ({ title, value, icon, color, delay }) => {
   const theme = useTheme();
@@ -138,6 +141,29 @@ const ProjectCard = ({ project, delay }) => {
 const Dashboard = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [profileMsg, setProfileMsg] = useState("");
+  const [profileName, setProfileName] = useState(user?.name || "");
+  const [profileEmail, setProfileEmail] = useState(user?.email || "");
+
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("name", profileName);
+      formData.append("email", profileEmail);
+      if (avatarFile) formData.append("avatar", avatarFile);
+      const res = await api.put(`/users/${user._id}`, formData, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      setUser((prev) => ({ ...prev, ...res.data }));
+      localStorage.setItem("user", JSON.stringify({ ...user, ...res.data }));
+      setProfileMsg("Profile updated!");
+    } catch (err) {
+      setProfileMsg(err.response?.data?.message || "Update failed.");
+    }
+  };
 
   const stats = [
     {

@@ -10,6 +10,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import HomePage from "./pages/HomePage";
 import CreateProjectPage from "./pages/CreateProjectPage";
+import FileUpload from "./components/FileUpload";
+import Profile from "./pages/Profile";
 import { UserContext } from "./context/UserContext";
 
 const theme = createTheme({
@@ -69,12 +71,14 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/upload" element={<FileUpload />} />
           <Route path="/app" element={<PrivateRoute />}>
             <Route element={<Layout />}>
               <Route index element={<Dashboard />} />
               <Route path="projects" element={<Projects />} />
               <Route path="project/create" element={<CreateProjectPage />} />
               <Route path="tasks/:taskId" element={<TaskDetail />} />
+              <Route path="profile" element={<Profile />} />
             </Route>
           </Route>
         </Routes>

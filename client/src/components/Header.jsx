@@ -113,7 +113,13 @@ const Header = ({ onMenuClick }) => {
                 height: 32,
                 bgcolor: theme.palette.primary.main,
               }}
-              src={user?.avatar || undefined}
+              src={
+                user?.avatar
+                  ? user.avatar.startsWith("/uploads/")
+                    ? `http://localhost:5000${user.avatar}`
+                    : user.avatar
+                  : undefined
+              }
             >
               {user?.name ? user.name.charAt(0).toUpperCase() : "A"}
             </Avatar>
