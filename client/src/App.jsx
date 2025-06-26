@@ -1,5 +1,5 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useContext } from "react";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { AnimatePresence } from "framer-motion";
 import Layout from "./components/Layout";
@@ -9,6 +9,8 @@ import TaskDetail from "./pages/TaskDetail";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import HomePage from "./pages/HomePage";
+import CreateProjectPage from "./pages/CreateProjectPage";
+import { UserContext } from "./context/UserContext";
 
 const theme = createTheme({
   palette: {
@@ -54,6 +56,11 @@ const theme = createTheme({
   },
 });
 
+function PrivateRoute() {
+  const { user } = useContext(UserContext);
+  return user ? <Outlet /> : <Navigate to="/login" replace />;
+}
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -62,10 +69,13 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/app" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="projects" element={<Projects />} />
-            <Route path="tasks/:taskId" element={<TaskDetail />} />
+          <Route path="/app" element={<PrivateRoute />}>
+            <Route element={<Layout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="projects" element={<Projects />} />
+              <Route path="project/create" element={<CreateProjectPage />} />
+              <Route path="tasks/:taskId" element={<TaskDetail />} />
+            </Route>
           </Route>
         </Routes>
       </AnimatePresence>

@@ -43,6 +43,20 @@ const projectSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  team: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  board: {
+    type: [columnSchema],
+    default: [
+      { id: "todo", name: "To Do", order: 0 },
+      { id: "inprogress", name: "In Progress", order: 1 },
+      { id: "done", name: "Done", order: 2 },
+    ],
+  },
 });
 
 // Add indexes for better query performance
